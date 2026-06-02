@@ -6,7 +6,7 @@ include("../db_connect.php");
 
 $query = "SELECT * FROM vehicles";
 
-$result = mysqli_query($conn, $query);
+$result = mysqli_query($conn,$query);
 
 ?>
 
@@ -14,7 +14,7 @@ $result = mysqli_query($conn, $query);
 <html>
 <head>
 
-<title>Manage Listings | SheDrives</title>
+<title>My Listings | SheDrives</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
@@ -45,9 +45,9 @@ h1{
 
     background:white;
 
-    padding:25px;
-
     border-radius:20px;
+
+    padding:25px;
 
     margin-bottom:25px;
 
@@ -83,6 +83,37 @@ h1{
 
     text-decoration:none;
 
+    margin-right:10px;
+
+}
+
+.back-btn{
+
+    display:inline-block;
+
+    margin-bottom:25px;
+
+    background:
+    linear-gradient(to right,#d81b60,#7b1fa2);
+
+    color:white;
+
+    padding:12px 22px;
+
+    border-radius:8px;
+
+    text-decoration:none;
+
+    font-weight:500;
+
+    transition:0.3s;
+
+}
+
+.back-btn:hover{
+
+    opacity:0.9;
+
 }
 
 </style>
@@ -91,25 +122,13 @@ h1{
 
 <body>
 
-<div class="navbar">
-
-    <div class="logo">
-
-        SheDrives
-
-    </div>
-
-    <a href="moderator_dashboard.php" class="back-btn">
-
-        Back Dashboard
-
-    </a>
-
-</div>
-
 <div class="container">
 
-<h1>Manage Listings</h1>
+<a href="dashboard.php" class="back-btn">
+    Back to Dashboard
+</a>
+
+<h1>My Listings</h1>
 
 <?php
 
@@ -137,16 +156,23 @@ R<?php echo number_format($row['price']); ?>
 
 <br>
 
-<a href="delete_listing.php?id=<?php echo $row['vehicle_id']; ?>"
+<a href="edit_car.php?id=<?php echo $row['vehicle_id']; ?>"
 class="btn">
 
-Delete Listing
+Edit
+
+</a>
+
+<a href="delete_car.php?id=<?php echo $row['vehicle_id']; ?>"
+class="btn">
+
+Delete
 
 </a>
 
 </div>
 
-    <?php } ?>
+<?php } ?>
 
 </div>
 

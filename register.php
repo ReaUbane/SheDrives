@@ -1,61 +1,249 @@
 <?php
-include 'db.php';
-
-if (isset($_POST['register'])) {
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-    $role = "buyer";
-
-$stmt = $conn->prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)");
-$stmt->bind_param("ssss", $name, $email, $password, $role);
-
-    $sql = "INSERT INTO users (name, email, password, role)
-    VALUES ('$name', '$email', $password', '$role')"; 
-
-    if($conn->query($sql)){
-        echo "Registered successfully!";
-    }
-}
+session_start();
 ?>
-
-<form method="POST">
-    <input type="text" name="name" placeholder="Name" required>
-    <input type="email" name="email" placeholder="Email" required>
-    <input type="password" name="password" placeholder="Password" required>
-    <button name="register">Register</button>
-</form> 
-
-<?php include 'db.php'; ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-<title>Register</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <title>Register | SheDrives</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Poppins', sans-serif;
+        }
+
+        body{
+            background:#f5f5f5;
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+
+        .register-container{
+
+            width:500px;
+
+            background:white;
+
+            padding:40px;
+
+            border-radius:20px;
+
+            box-shadow:0 5px 20px rgba(0,0,0,0.1);
+
+        }
+
+        .logo{
+
+            text-align:center;
+
+            font-size:36px;
+
+            font-weight:700;
+
+            color:#7b1fa2;
+
+            margin-bottom:10px;
+
+        }
+
+        .subtitle{
+
+            text-align:center;
+
+            color:#777;
+
+            margin-bottom:30px;
+
+        }
+
+        h2{
+
+            text-align:center;
+
+            margin-bottom:25px;
+
+            color:#333;
+
+        }
+
+        .form-group{
+
+            margin-bottom:18px;
+
+        }
+
+        label{
+
+            display:block;
+
+            margin-bottom:8px;
+
+            font-weight:500;
+
+            color:#555;
+
+        }
+
+        input,
+        select{
+
+            width:100%;
+
+            padding:14px;
+
+            border:1px solid #ddd;
+
+            border-radius:10px;
+
+            font-size:15px;
+
+        }
+
+        input:focus,
+        select:focus{
+
+            outline:none;
+
+            border-color:#7b1fa2;
+
+        }
+
+        .btn{
+
+            width:100%;
+
+            border:none;
+
+            padding:15px;
+
+            border-radius:10px;
+
+            background:linear-gradient(to right,#d81b60,#7b1fa2);
+
+            color:white;
+
+            font-size:16px;
+
+            font-weight:600;
+
+            cursor:pointer;
+
+            margin-top:10px;
+
+        }
+
+        .btn:hover{
+
+            opacity:0.9;
+
+        }
+
+        .login-link{
+
+            text-align:center;
+
+            margin-top:20px;
+
+        }
+
+        .login-link a{
+
+            color:#7b1fa2;
+
+            text-decoration:none;
+
+            font-weight:600;
+
+        }
+
+        .back-home{
+
+            display:block;
+
+            text-align:center;
+
+            margin-top:15px;
+
+            color:#555;
+
+            text-decoration:none;
+
+        }
+
+    </style>
+
 </head>
 
-<body class="bg-light">
+<body>
 
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-5">
-      <div class="card shadow">
-        <div class="card-header text-center bg-dark text-white">
-          <h4>Create Account</h4>
-        </div>
+<div class="register-container">
 
-        <div class="card-body">
-          <form method="POST">
-            <input class="form-control mb-3" type="text" name="name" placeholder="Name" required>
-            <input class="form-control mb-3" type="email" name="email" placeholder="Email" required>
-            <input class="form-control mb-3" type="password" name="password" placeholder="Password" required>
-            <button class="btn btn-dark w-100" name="register">Register</button>
-          </form>
-        </div>
-      </div>
+    <div class="logo">
+        SheDrives
     </div>
-  </div>
+
+    <div class="subtitle">
+        Join South Africa's trusted car marketplace
+    </div>
+
+    <h2>Create Account</h2>
+
+    <form action="register_process.php" method="POST">
+
+        <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" name="full_name" required>
+        </div>
+
+        <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+            <label>Phone Number</label>
+            <input type="text" name="phone" required>
+        </div>
+
+        <div class="form-group">
+            <label>Register As</label>
+
+            <select name="role" required>
+                <option value="">Select Role</option>
+                <option value="buyer">Buyer</option>
+                <option value="seller">Seller</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" required>
+        </div>
+
+        <button type="submit" class="btn">
+            Create Account
+        </button>
+
+    </form>
+
+    <div class="login-link">
+        Already have an account?
+        <a href="login.php">Login</a>
+    </div>
+
+    <a href="index.php" class="back-home">
+        ← Back to Home
+    </a>
+
 </div>
 
 </body>
